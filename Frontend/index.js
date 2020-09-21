@@ -36,15 +36,16 @@ const getOneShoe = (shoe) => {
         shoeName.innerText = shoe.name
         shoeDescription.innerText = shoe.description
         shoePrice.innerText = shoe.price
+
+        generateForm(shoe)
+        reviewsList.innerHTML = ''
         shoe.reviews.forEach( review => {
-            reviewsList.innerHTML = ''
             let reviewListItem = document.createElement('li')
             reviewListItem.className = 'list-group-item'
             reviewListItem.innerText = review.content
             reviewsList.append(reviewListItem)
         })
 
-        generateForm(shoe)
 }
 
 const getFirstShoe = () => {
@@ -55,6 +56,7 @@ const getFirstShoe = () => {
         shoeName.innerText = shoe.name
         shoeDescription.innerText = shoe.description
         shoePrice.innerText = shoe.price
+        generateForm(shoe)
         shoe.reviews.forEach( review => {
             let reviewListItem = document.createElement('li')
             reviewListItem.className = 'list-group-item'
@@ -85,7 +87,7 @@ const generateForm = (shoe) => {
 
     reviewForm.addEventListener('submit', event => {
         event.preventDefault()
-        let newReview = event.target['review-content'].value
+        let newReviewContent = event.target['review-content'].value
         let shoeId = shoe.id 
         fetch(`http://localhost:3000/shoes/${shoeId}/reviews`, {
             method: 'POST',
@@ -93,13 +95,20 @@ const generateForm = (shoe) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                content: newReview
+                content: newReviewContent
                 //backend can update successfully
             })
         })
         .then(response => response.json())
-        .then(updatedReview => {
-            
+        .then(newReviewObj => {
+            console.log(shoe.reviews.length)
+            shoe.reviews.push(newReviewObj.content)
+            console.log(shoe.reviews.length)
+
+            let reviewListItem = document.createElement('li')
+            reviewListItem.className = 'list-group-item'
+            reviewListItem.innerText = newReviewObj.content
+            reviewsList.append(reviewListItem)
         }) //returns review object - it associates with the shoe reviewed on the backend
     })
 
