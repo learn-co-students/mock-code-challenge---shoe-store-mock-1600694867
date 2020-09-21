@@ -53,8 +53,7 @@ function loadShoes(shoeId){
         formContainer.innerHTML =`<form id="new-review">
                                 <div class="form-group">
                                 <label>Leave a Review:</label>
-                                <textarea class="form-control" id="review-content" rows="3">
-                                </textarea>
+                                <textarea class="form-control" id="review-content" rows="3"></textarea>
                                 <input type="submit" class="btn btn-primary"></input>
                                 </div>
                                 </form>`
