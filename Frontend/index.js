@@ -126,23 +126,65 @@ let turnReviewToLI = (review) => {
 
 
 
+// From Review with Isabel
 
-// let shoeReviewForm = 
-    // let reviewForm = document.createElement("form")
-    // reviewForm.id = "new-review"
+// for shoeLI.addEventListener (line 43)
+// don't need to find (fetch) the shoe clicked on 
+// b/c have access to it already by clicking on it (shoeLi)
+// shoeLi.addEventListener("click", (evt) => {
+//     mainShoe(shoeLi)
+// })
 
-    // let formDiv = document.createElement("div")
-    // formDiv.classList.add("form-group")
+// to clear all children of a specific element
+// instead of .innerHTML = "" or .innerText = ""
+// while (reviewList.firstChild) {
+//     reviewList.firstChild.remove()
+// }
 
-    // let formTA = document.createElement("textarea")
-    // formTA.classList.add("form-control")
-    // formTA.id = "review-content"
-    // formTA.rows = "3"
+// it's okay if the shoe is grey; in mainShoe would do shoeReviewForm(shoe)
+// that shoe would be from mainShoe, not the show below
+// let shoeReviewForm = (shoe) => {
+//     let reviewForm = document.createElement("form")
+//     reviewForm.id = "new-review"
 
-    // let formSubmit = document.createElement("input")
-    // formSubmit.type = "submit"
-    // formSubmit.classList.add("btn btn-primary")
+//     let formDiv = document.createElement("div")
+//     formDiv.classList.add("form-group")
 
-    // formDiv.append(formTA, formSubmit)
-    // reviewForm.append(formDiv)
-    // reviewFormContainer.append(reviewForm)
+//     let formTA = document.createElement("textarea")
+//     formTA.classList.add("form-control")
+//     formTA.id = "review-content"
+//     formTA.rows = "3"
+
+//     let formSubmit = document.createElement("input")
+//     formSubmit.type = "submit"
+//     formSubmit.classList.add("btn btn-primary")
+
+//     formDiv.append(formTA, formSubmit)
+//     reviewForm.append(formDiv)
+//     reviewFormContainer.append(reviewForm)
+
+    //submitting the Shoe Review
+    // reviewForm.addEventListener("submit", (evt) => {
+    //     evt.preventDefault()
+    //     let reviewContent = formTA.value
+        // updates the backend
+        // fetch(`http://localhost:3000/shoes/${shoe.id}/reviews`, {
+        //     method: "POST",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         content: reviewContent
+        //     })
+        // })
+        // .then(response => response.json())
+        // .then(reviewObj => {
+            // updates the object in memory
+            // shoe.reviews.push(reviewObj)
+
+            // updates the DOM
+    //         turnReviewToLI(reviewObj)
+    //     })
+    // })
+    // End of submitting the Shoe Review
+// }
