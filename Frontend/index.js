@@ -33,47 +33,8 @@ let turnShoeIntoLi = (shoe) => {
     shoeDescription.innerText = shoe.description
     shoePrice.innerText = `$${shoe.price}.00`
 
-    reviewsList.innerHTML = ""
-
-    if (shoe.reviews.length > 0) {
-      shoe.reviews.forEach((review) => {
-        let reviewLi = document.createElement("li")
-        reviewLi.innerText = review.content 
-        reviewsList.append(reviewLi)
-      })
-    }
-
-    formContainer.innerHTML = ""
-
-    let inputField = document.createElement("input")
-    inputField.type = "text"
-    inputField.placeholder = "review content"
-
-    let submitButton = document.createElement("button")
-    submitButton.innerText = "submit"
-
-    formContainer.append(inputField, submitButton)
-
-    submitButton.addEventListener("click", (event) => {
-      let newReviewContent = inputField.value
-   
-      fetch(`${shoesURL}/${shoe.id}/reviews`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          content: newReviewContent
-        })
-      })
-      .then(r => r.json())
-      .then((newReview) => {
-        shoe.reviews.push(newReview)
-        let reviewLi = document.createElement("li")
-        reviewLi.innerText = newReview.content 
-        reviewsList.append(reviewLi)
-      })
-    })
+    createAllReviews(shoe)
+    createReviewForm(shoe)
   })
 }
 
@@ -83,4 +44,53 @@ let renderFirstShoe = (shoesArray) => {
   shoeName.innerText = firstShoe.name 
   shoeDescription.innerText = firstShoe.description 
   shoePrice.innerText = `$${firstShoe.price}.00`
+
+  createAllReviews(firstShoe)
+  createReviewForm(firstShoe)
+}
+
+let createAllReviews = (shoe) => {
+  reviewsList.innerHTML = ""
+
+  if (shoe.reviews.length > 0) {
+    shoe.reviews.forEach((review) => {
+      let reviewLi = document.createElement("li")
+      reviewLi.innerText = review.content 
+      reviewsList.append(reviewLi)
+    })
+  }
+}
+
+let createReviewForm = (shoe) => {
+  formContainer.innerHTML = ""
+
+  let inputField = document.createElement("input")
+  inputField.type = "text"
+  inputField.placeholder = "review content"
+
+  let submitButton = document.createElement("button")
+  submitButton.innerText = "submit"
+
+  formContainer.append(inputField, submitButton)
+
+  submitButton.addEventListener("click", (event) => {
+    let newReviewContent = inputField.value
+ 
+    fetch(`${shoesURL}/${shoe.id}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: newReviewContent
+      })
+    })
+    .then(r => r.json())
+    .then((newReview) => {
+      shoe.reviews.push(newReview)
+      let reviewLi = document.createElement("li")
+      reviewLi.innerText = newReview.content 
+      reviewsList.append(reviewLi)
+    })
+  })
 }
