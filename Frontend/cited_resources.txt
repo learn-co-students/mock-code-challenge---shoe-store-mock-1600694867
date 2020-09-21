@@ -1,0 +1,9 @@
+Resources Cited:
+
+Creating a form in JS
+    https://stackoverflow.com/questions/13001830/creating-and-submitting-a-form-with-javascript
+    https://stackoverflow.com/questions/24039477/create-append-and-submit-form-using-pure-javascript
+
+Using Fetch
+    https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
