@@ -18,6 +18,7 @@ let turnShoeToHTML = (shoe) => {
 
     let reviewForm = document.createElement("form")     // Create form to submit new review
         reviewForm.method = 'POST'
+        reviewForm.id = "#reviewForm"
         let formElement1 = document.createElement('input')
         formElement1.setAttribute('type', 'text')
         reviewForm.append(formElement1)
@@ -25,11 +26,17 @@ let turnShoeToHTML = (shoe) => {
 
     let reviewButton = document.createElement('button') // Make Button to Submit New Review
         reviewButton.innerText = 'Post Review'
+        reviewButton.id = "#reviewButton"
         formContainer.append(reviewButton)
         reviewButton.addEventListener("click", (evt) => {reviewForm.submit()})
-    // shoeForm.addEventListener("submit", (evt) => {      // Event listener to be triggered when reviewButton "click" triggers "submit"
+
+    console.log(arrayOfReviewIds)
+
+    // reviewForm.addEventListener("submit", (evt) => {      // Event listener to be triggered when reviewButton "click" triggers "submit"
+    //     evt.preventDefault(),
+    //     let yourReviewId = evt.target. ,
+    //     let yourReviewContent = evt.target.formElement1.value,
     //     debugger
-    //     evt.preventDefault()
     //     fetch(`http://localhost:3000/shoes/${shoe.id}`, {
     //         method: "POST",
     //         headers: {
@@ -37,9 +44,13 @@ let turnShoeToHTML = (shoe) => {
     //             Accept: "application/json"
     //         },
     //         body: JSON.stringify({
-    //             reviews: shoe.reviews
-    //             debugger
+    //             reviews.id: yourReviewId
     //         })
+    //     })
+    //     .then(res => res.json())
+    //     .then(updatedShoe => {
+    //         updatedshoe.reviews.forEach(makeReviewLi)
+    //         shoe.reviews = updatedShoe.reviews
     //     })
     // })
 }
@@ -61,3 +72,15 @@ let makeReviewLi = (review) => {            // Make Review list item
 }
 
 
+// Give each consecutive new review the correct id: Integer
+let arrayOfReviewIds = []
+let findHighestReviewId = 
+    fetch("http://localhost:3000/shoes")
+    .then(res => res.json())
+    .then(shoesArray => {
+        shoesArray.forEach(shoe => {
+            shoe.reviews.forEach(review => {
+                arrayOfReviewIds.push(review.id)
+            })
+        })
+    })
