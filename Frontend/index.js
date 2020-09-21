@@ -5,7 +5,7 @@ const shoeName = document.querySelector("#shoe-name")
 const shoeDesc = document.querySelector("#shoe-description")
 const shoePrice = document.querySelector("#shoe-price")
 const formContainer = document.querySelector("#form-container")
-const shoeReviews = document.querySelector("#reviews-list")
+const shoeReviewsUl = document.querySelector("#reviews-list")
 
 
 let turnShoeToHTML = (shoe) => {
@@ -14,19 +14,8 @@ let turnShoeToHTML = (shoe) => {
     shoeName.innerText = shoe.name
     shoeDesc.innerText = shoe.description
     shoePrice.innerText = `$${shoe.price} USD`
-    shoe.reviews.forEach(makeReviewLi)              // Populate ul with each review li
-
-    let reviewForm = document.createElement("form")     // Create form to submit new review
-        reviewForm.method = 'POST'
-        let formElement1 = document.createElement('input')
-        formElement1.setAttribute('type', 'text')
-        reviewForm.append(formElement1)
-        formContainer.append(reviewForm)        // Append form inside 
-
-    let reviewButton = document.createElement('button') // Make Button to Submit New Review
-        reviewButton.innerText = 'Post Review'
-        formContainer.append(reviewButton)
-        reviewButton.addEventListener("click", (evt) => {reviewForm.submit()})
+    shoe.reviews.forEach(makeReviewLi)
+                                            // Populate ul with each review li
 
     // shoeForm.addEventListener("submit", (evt) => {      // Event listener to be triggered when reviewButton "click" triggers "submit"
     //     debugger
@@ -45,17 +34,20 @@ let turnShoeToHTML = (shoe) => {
     // })
 }
 
-
-fetch("http://localhost:3000/shoes")
+fetch("http://localhost:3000/shoes/1")
     .then(res => res.json())
-    .then(shoes => {
-        shoes.forEach(turnShoeToHTML)
-    })
+    .then(turnShoeToHTML)
+// fetch("http://localhost:3000/shoes")
+//     .then(res => res.json())
+//     .then(shoes => {
+//         shoes.forEach(turnShoeToHTML)
+//     })
 
 
-// Make Review list item
-let makeReviewLi = (review) => {
+let makeReviewLi = (review) => {            // Make Review list item
     reviewLi = document.createElement("li")
     reviewLi.innerText = `"${review.content}"`
-    shoeReviews.append(reviewLi)
+    shoeReviewsUl.append(reviewLi)
 }
+
+
