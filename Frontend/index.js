@@ -1,11 +1,15 @@
+
 const shoeUrl = "http://localhost:3000/shoes"
+
 const shoeUl = document.querySelector("ul#shoe-list.list-group")
 const shoeImgDiv = document.querySelector("img#shoe-image.card-img-top")
 const shoeNameDiv = document.querySelector("h4#shoe-name.card-title")
 const shoeDesc = document.querySelector("p#shoe-description.card-text")
 const shoePrice = document.querySelector("small#shoe-price.text-muted")
+
 const reviewForm = document.querySelector("div#form-container.container")
 const reviewUl = document.querySelector("ul#reviews-list.list-group.list-group-flush")
+
 let allShoes = []
 let theShoe = []
 
@@ -84,17 +88,5 @@ function loadShoes(shoeId){
 
         })
             
-// by default have the first shoe rendered in the main container (see deliverable 2).
+// by default have the first shoe rendered in the main container
 loadShoes(1)
-
-// CLICKING ONE OF THE SHOES ON SIDEBAR:
-//they should be able to see more details about the shoe
-
-//the reviews associated with it and a form in the main container
-//There should only be one shoe in the main container at one time.
-
-
-// UPON SUBMITTING THE FORM:
-//the review should get persisted in the backend and also be shown on the page without refreshing.
-//When you create a review for a given shoe, if you click on another shoe
-//and you go back to your initial shoe, you should see the new review persist without refreshing.
