@@ -1,98 +1,86 @@
-// Code your solution here
-const url = 'http://localhost:3000/shoes'
+// When a user loads the page, they should be able to see a list of all the shoes in the sidebar and by default, have the first shoe rendered in the main container (see deliverable 2).
 
-const shoeUL = document.querySelector("ul#shoe-list")
-const shoeIMG = document.querySelector("img.card-img-top")
-const shoeTitle = document.querySelector("h4#shoe-name")
+// * When a user clicks on one of the shoes in the sidebar, they should be able to see more details about the shoe, the reviews associated with it and a form in the main container. There should only be one shoe in the main container at one time.
+
+// * When a user fills the form out and submits it, the review should get persisted in the backend and also be shown on the page, without refreshing. When you create a review for a given shoe, if you click on another shoe and you go back to your initial shoe, you should see the new review persist without refreshing.
+
+const shoesURL = `http://localhost:3000/shoes`
+const shoesList = document.querySelector("ul#shoe-list")
+const shoeImage = document.querySelector("img#shoe-image")
+const shoeName = document.querySelector("h4#shoe-name")
 const shoeDescription = document.querySelector("p#shoe-description")
-const shoePrice= document.querySelector("small#shoe-price")
-
-const reviewsUL = document.querySelector("ul#reviews-list")
+const shoePrice = document.querySelector("small#shoe-price")
+const reviewsList = document.querySelector("ul#reviews-list")
 const formContainer = document.querySelector("div#form-container")
 
-
-
-
-
-fetch(url)
+fetch(shoesURL)
 .then(r => r.json())
-.then(shoesObj => {
-    shoesObj.forEach(shoeObj => {
-        turnObjtoHTML(shoeObj)
-    })
+.then((shoesArray) => {
+  renderFirstShoe(shoesArray)
+  shoesArray.forEach((shoe) => {
+    turnShoeIntoLi(shoe)
+  })
 })
 
-function turnObjtoHTML(shoeObj){
-    //create Shoe List
-    let shoeLI = document.createElement("li")
-    shoeLI.id = shoeObj.id
-    shoeLI.innerText = shoeObj.name
-    shoeLI.style.cursor = "pointer"
-    changeColor(shoeLI)
-    shoeUL.append(shoeLI)
+let turnShoeIntoLi = (shoe) => {
+  let shoeLi = document.createElement("li")
+  shoeLi.innerText = shoe.name 
+  shoesList.append(shoeLi)
 
-    //fetch individual shoe on Click
-    shoeLI.addEventListener("click", (evt)=>{
-        fetch(url+`/${shoeObj.id}`) 
-        .then(r => r.json())
-        .then(currentObj => {
-            shoeIMG.src = currentObj.image
-            shoeTitle.innerText = currentObj.name
-            shoeDescription.innerText = currentObj.description
-            shoePrice.innerText = "$" + currentObj.price
+  shoeLi.addEventListener("click", (event) => {
+    shoeImage.src = shoe.image
+    shoeName.innerText = shoe.name
+    shoeDescription.innerText = shoe.description
+    shoePrice.innerText = `$${shoe.price}.00`
 
-            //reviews list 
-            let reviewsArr = currentObj.reviews
-            reviewsArr.forEach(review => {
-                logReview(review)
-            })
+    reviewsList.innerHTML = ""
 
-            function logReview(review){
-                let reviewLI = document.createElement("li")
-                reviewLI.innerText = review.content
-                // reviewLI.setAttribute("style", "list-style-type:none;" )
-                reviewsUL.append(reviewLI)
-            }
-        
-            //formBox on top of Review, using a fetch patch
-            let formBox = document.createElement('form')
-            
-            formContainer.append(formBox) 
+    if (shoe.reviews.length > 0) {
+      shoe.reviews.forEach((review) => {
+        let reviewLi = document.createElement("li")
+        reviewLi.innerText = review.content 
+        reviewsList.append(reviewLi)
+      })
+    }
 
-            currentObj.reviews.push(userInput)
-            fetch(url+ `/${currentObj.id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    review: currentObj.reviews
-                })
-            })
+    formContainer.innerHTML = ""
 
+    let inputField = document.createElement("input")
+    inputField.type = "text"
+    inputField.placeholder = "review content"
 
+    let submitButton = document.createElement("button")
+    submitButton.innerText = "submit"
 
+    formContainer.append(inputField, submitButton)
 
+    submitButton.addEventListener("click", (event) => {
+      let newReviewContent = inputField.value
+   
+      fetch(`${shoesURL}/${shoe.id}/reviews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: newReviewContent
         })
+      })
+      .then(r => r.json())
+      .then((newReview) => {
+        shoe.reviews.push(newReview)
+        let reviewLi = document.createElement("li")
+        reviewLi.innerText = newReview.content 
+        reviewsList.append(reviewLi)
+      })
     })
+  })
+}
 
-
-
-
-
-}   
-
-
-
-
-
-//_________________________________________________
-
-function changeColor(ele){
-    ele.addEventListener("mouseenter", (evt)=> {
-        evt.target.style.color = "blue"
-    })
-    ele.addEventListener("mouseleave", (evt)=> {
-        evt.target.style.color = "black"
-    })
+let renderFirstShoe = (shoesArray) => {
+  let firstShoe = shoesArray[0]
+  shoeImage.src = firstShoe.image 
+  shoeName.innerText = firstShoe.name 
+  shoeDescription.innerText = firstShoe.description 
+  shoePrice.innerText = `$${firstShoe.price}.00`
 }
