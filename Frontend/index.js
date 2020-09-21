@@ -17,7 +17,7 @@ fetch(shoeUrl, { method: "GET"})
         allShoes = shoeListPOJO
         const shoeLi = allShoes.map((shoe) =>
         
-        `<div class="shoe item" id="${shoe.id}">${shoe.company}</div>`)
+        `<div class="shoe item" id="${shoe.id}">${shoe.name}</div>`)
 
         shoeUl.innerHTML= shoeLi.join('')
         // console.log(shoeUl)
@@ -59,15 +59,13 @@ function loadShoes(shoeId){
                                 </div>
                                 </form>`
 
-        console.log(formContainer)
+        // console.log(formContainer)
         reviewForm.append(formContainer)
 
 
         formContainer.addEventListener('submit', (event) =>{
             event.preventDefault();
             let newReview = event.target["review-content"].value
-            console.log(theShoe.id)
-            console.log(newReview)
 
             fetch(`http://localhost:3000/shoes/${theShoe.id}/reviews`, {
                 method: "POST",
@@ -76,36 +74,28 @@ function loadShoes(shoeId){
                 })
 
                 .then(res => res.json())
-                .then((updatedShoe) => {
-                    theShoe = updatedShoe
+                .then((newReviewObj) => {
+                    // console.log(newReviewObj)
+                    let newReviewLi = document.createElement('li')
+                    newReviewLi.innerText = newReviewObj.content
+                    reviewUl.appendChild(newReviewLi)
                 })
-
-            })
             
-loadShoes(1)
+            
 
-
-
-
-
-
-
-
-
-
-
-
+        })
+            
 // by default have the first shoe rendered in the main container (see deliverable 2).
 loadShoes(1)
 
 // CLICKING ONE OF THE SHOES ON SIDEBAR:
-//   1. they should be able to see more details about the shoe
+//they should be able to see more details about the shoe
 
-//      the reviews associated with it and a form in the main container)
-//      There should only be one shoe in the main container at one time.
+//the reviews associated with it and a form in the main container
+//There should only be one shoe in the main container at one time.
 
 
 // UPON SUBMITTING THE FORM:
-//   1. the review should get persisted in the backend and also be shown on the page without refreshing.
-//   2. When you create a review for a given shoe, if you click on another shoe
-//      and you go back to your initial shoe, you should see the new review persist without refreshing.
+//the review should get persisted in the backend and also be shown on the page without refreshing.
+//When you create a review for a given shoe, if you click on another shoe
+//and you go back to your initial shoe, you should see the new review persist without refreshing.
