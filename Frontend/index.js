@@ -14,9 +14,19 @@ let turnShoeToHTML = (shoe) => {
     shoeName.innerText = shoe.name
     shoeDesc.innerText = shoe.description
     shoePrice.innerText = `$${shoe.price} USD`
-    shoe.reviews.forEach(makeReviewLi)
-                                            // Populate ul with each review li
+    shoe.reviews.forEach(makeReviewLi)          // Populate ul with each review li
 
+    let reviewForm = document.createElement("form")     // Create form to submit new review
+        reviewForm.method = 'POST'
+        let formElement1 = document.createElement('input')
+        formElement1.setAttribute('type', 'text')
+        reviewForm.append(formElement1)
+        formContainer.append(reviewForm)        // Append form inside 
+
+    let reviewButton = document.createElement('button') // Make Button to Submit New Review
+        reviewButton.innerText = 'Post Review'
+        formContainer.append(reviewButton)
+        reviewButton.addEventListener("click", (evt) => {reviewForm.submit()})
     // shoeForm.addEventListener("submit", (evt) => {      // Event listener to be triggered when reviewButton "click" triggers "submit"
     //     debugger
     //     evt.preventDefault()
@@ -27,8 +37,8 @@ let turnShoeToHTML = (shoe) => {
     //             Accept: "application/json"
     //         },
     //         body: JSON.stringify({
-    //             reviews: 
-
+    //             reviews: shoe.reviews
+    //             debugger
     //         })
     //     })
     // })
